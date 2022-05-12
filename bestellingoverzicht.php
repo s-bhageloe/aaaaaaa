@@ -4,7 +4,7 @@ include_once 'database.php';
 // Connection made
 $db = new DB('localhost', 'root', '', 'restaurant', 'utf8mb4'); //hier zet je de waardes($..) constructor
 
-$barman = $db->showBar();
+$bestelling = $db->showBestelling();
 
 
 ?>
@@ -53,17 +53,19 @@ $barman = $db->showBar();
         <table class="table table-striped" id="overzicht">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Drinken</th>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Prijs</th>
                     <th scope="col">Aantal</th>
 
                 </tr>
             </thead>
             <tbody> 
                 <!-- klanten are rows and klant is a single row  -->
-                <?php foreach ($barman as $bar): ?>
+                <?php foreach ($bestelling as $bestel): ?>
                     <tr>
-                        <td><?php echo $bar["naam"]; ?></td>
-                        <td><?php echo $bar["aantal"];?></td>
+                        <td><?php echo $bestel["naam"]; ?></td>
+                        <td><?php echo $bestel["prijs"];?></td>
+                        <td><?php echo $bestel["aantal"];?></td>
                         <td class="noExl">
                             <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
                         </td>      

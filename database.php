@@ -301,73 +301,96 @@ class DB{
                      }
                 }
 
-                public function showKok(){
-                    try {
 
-                    $query = "SELECT * FROM bestellingen JOIN reserveringen ON bestellingen.reserveringenID_ph = reserveringen.reserveringenID 
-                    JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'kok'";
-                                        
-                    $prep = $this->pdo->prepare($query);
-                
-                    $prep->execute();
-                            
-                    $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
-                                     
-                         return $rows;
-                     } catch (\Throwable $th) {
-                          throw $th;
-                     }
-                }
-
-                //verwijder de reservering
         function deleteReservering($reserveringsID){
-            //een query die alles verwijdert in de reserveringen tabel en klant tabel voor de geselecteerde reservering met behulp van de ID
+
             $query = "DELETE reserveringen, klanten FROM reserveringen JOIN klanten on reserveringen.klantenID_ph = klanten.klantenID
                 WHERE reserveringenID = :reserveringenID;";
 
-            //je prepared de query
+   
             $statement = $this->pdo->prepare($query);
 
-            //je execute het
-            //je assigned de kolom namen waar het in moet met de parameters.
             $statement->execute([
                 'reserveringenID' => $reserveringsID
             ]);
 
-            //zodra alles is verstuurd gaat het terug naar de reservatie overzicht
             header("Location: reserveren.php");
 
-            //deze functie wordt gebruikt op pagina(s): //
-            // - reservatie_edit.php                    //
-            // - reservatie_delete.php                  //
-            //zie verdere uitleg op pagina(s):          //
-            // - reservatie_edit.php                    //
-            // - reservatie_delete.php                  //
         }
 
         public function deleteKlant($klantenID){
-            //een query die alles verwijdert in de reserveringen tabel en klant tabel voor de geselecteerde reservering met behulp van de ID
+
             $query = "DELETE reserveringen, klanten FROM reserveringen JOIN klanten on reserveringen.klantenID_ph = klanten.klantenID
                 WHERE reserveringenID = :reserveringenID; AND klanten.klant_ID = reserveringen.klant_ID";
 
-            //je prepared de query
             $statement = $this->pdo->prepare($query);
 
-            //je execute het
-            //je assigned de kolom namen waar het in moet met de parameters.
+
             $statement->execute([
                 'reserveringenID' => $klantenID
             ]);
 
-            //zodra alles is verstuurd gaat het terug naar de reservatie overzicht
+
             header("Location: klant.php");
 
-            //deze functie wordt gebruikt op pagina(s): //
-            // - reservatie_edit.php                    //
-            // - reservatie_delete.php                  //
-            //zie verdere uitleg op pagina(s):          //
-            // - reservatie_edit.php                    //
-            // - reservatie_delete.php                  //
         }
-            
+
+        public function createBestelling($geserveerd, $reserveringenID_ph, $menuitemsID, $aantal) {
+            $sql = "INSERT INTO bestellingen (bestellingenID, geserveerd, aantal, reserveringenID_ph, menuitemsID_ph)
+                    VALUES (NULL, :geserveerd, :aantal, :reserveringenID_ph, :menuitemsID_ph)";
+    
+            $stmt = $this->pdo->prepare($sql);
+    
+            $stmt->execute([
+                ':geserveerd' => $geserveerd,
+                ':aantal' => $aantal,
+                ':reserveringenID_ph' => $reserveringenID_ph,
+                ':menuitemsID_ph' => $menuitemsID
+            ]);
+    
+            header("Location: index.php");
+        }
+
+        public function showBestelling(){
+            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID;";
+
+            $prep = $this->pdo->prepare($query);
+                
+            $prep->execute();
+                    
+            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                             
+            return $rows;
+
+        }
+
+        
+        public function showKok(){
+            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'kok';";
+
+            $prep = $this->pdo->prepare($query);
+                
+            $prep->execute();
+                    
+            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                             
+            return $rows;
+
+        }
+
+        
+        public function showBar(){
+            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'bar';";
+
+            $prep = $this->pdo->prepare($query);
+                
+            $prep->execute();
+                    
+            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                             
+            return $rows;
+
+        }
+
+    
 }

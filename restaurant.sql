@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 12 mei 2022 om 00:37
+-- Gegenereerd op: 12 mei 2022 om 02:32
 -- Serverversie: 10.4.6-MariaDB
 -- PHP-versie: 7.3.9
 
@@ -33,16 +33,18 @@ CREATE TABLE `bestellingen` (
   `reserveringenID_ph` int(11) DEFAULT NULL,
   `menuitemsID_ph` int(11) DEFAULT NULL,
   `aantal` int(11) DEFAULT NULL,
-  `gereserveerd` tinyint(4) DEFAULT NULL
+  `geserveerd` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `bestellingen`
 --
 
-INSERT INTO `bestellingen` (`bestellingenID`, `reserveringenID_ph`, `menuitemsID_ph`, `aantal`, `gereserveerd`) VALUES
+INSERT INTO `bestellingen` (`bestellingenID`, `reserveringenID_ph`, `menuitemsID_ph`, `aantal`, `geserveerd`) VALUES
 (1, NULL, 19, 1, NULL),
-(2, NULL, 19, 1, NULL);
+(2, NULL, 19, 1, NULL),
+(3, NULL, 10, 2, 1),
+(4, 4, 19, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -273,7 +275,7 @@ ALTER TABLE `reserveringen`
 -- AUTO_INCREMENT voor een tabel `bestellingen`
 --
 ALTER TABLE `bestellingen`
-  MODIFY `bestellingenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bestellingenID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `gerechtscategorien`

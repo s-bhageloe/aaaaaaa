@@ -53,9 +53,9 @@ $kok = $db->showKok();
         <table class="table table-striped" id="overzicht">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Tafel</th>
-                    <th scope="col">Aantal</th>
                     <th scope="col">Gerecht</th>
+                    <th scope="col">Aantal</th>
+                    
 
                 </tr>
             </thead>
@@ -63,9 +63,9 @@ $kok = $db->showKok();
                 <!-- klanten are rows and klant is a single row  -->
                 <?php foreach ($kok as $chef): ?>
                     <tr>
-                        <td><?php echo $chef["tafel"]; ?></td>
-                        <td><?php echo $chef["aantal"];?></td>
-                        <td><?php echo $chef["naam"];?></td>
+                       
+                    <td><?php echo $chef["naam"];?></td>
+                    <td><?php echo $chef["aantal"];?></td>
                         <td class="noExl">
                             <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
                         </td>      
