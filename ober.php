@@ -4,7 +4,7 @@ include_once 'database.php';
 // Connection made
 $db = new DB('localhost', 'root', '', 'restaurant', 'utf8mb4'); //hier zet je de waardes($..) constructor
 
-$klanten = $db->showKlant();
+$ober = $db->showOber();
 
 
 ?>
@@ -27,6 +27,7 @@ $klanten = $db->showKlant();
 
       <li class="active"><a href="overzichten.php">Overzichten</a></li>
       <li><a href="reserveren.php">Reserveringen</a></li>
+      <li><a href="bestellingoverzicht.php">Bestelling Overzicht</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Serveren <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="kok.php">Voor kok</a></li>
@@ -53,27 +54,20 @@ $klanten = $db->showKlant();
         <table class="table table-striped" id="overzicht">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Tafel</th>
+                    <th scope="col">BestellingenID</th>
                     <th scope="col">Aantal</th>
-                    <th scope="col">Gerecht</th>
-                    <th scope="col">Gereserveerd</th>
-
+                    <th scope="col">Gerechten en/of Dranken</th>
+                    <th scope="col">Menuitem</th>
                 </tr>
             </thead>
             <tbody> 
                 <!-- klanten are rows and klant is a single row  -->
-                <?php foreach ($klanten as $klant): ?>
+                <?php foreach ($ober as $obers): ?>
                     <tr>
-                        <td><?php echo $klant["tafel"]; ?></td>
-                        <td><?php echo $klant["omschrijving"];?></td>
-                        <td><?php echo $klant["gerecht"];?></td>
-                        <td><?php echo $klant["gereserveerd"];?></td>
-                        <td class="noExl">
-                            <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
-                        </td>      
-                        <td class="noExl">
-                            <a class="btn btn-danger mr-2 btn-sm" href="deleteklant.php?id=<?php echo $klant["klantenID"]; ?>">Delete</a>
-                        </td> 
+                        <td><?php echo $obers["bestellingenID"]; ?></td>
+                        <td><?php echo $obers["aantal"];?></td>
+                        <td><?php echo $obers["naam"];?></td>
+                        <td><?php echo $obers["menuitemsID_ph"];?></td>
                     </tr>
                 <?php endforeach; ?>     
             </tbody>

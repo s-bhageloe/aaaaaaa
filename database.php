@@ -30,32 +30,32 @@ class DB{
       
     }
 
-                public function login($gebruikersnaam, $wachtwoord){
-                    $sql="SELECT * FROM medewerker WHERE gebruikersnaam = :gebruikersnaam";
+    public function login($gebruikersnaam, $wachtwoord){
+        $sql="SELECT * FROM medewerker WHERE gebruikersnaam = :gebruikersnaam";
 
-                    $stmt = $this->pdo->prepare($sql); 
-                    $stmt->execute(['gebruikersnaam'=>$gebruikersnaam]); 
+        $stmt = $this->pdo->prepare($sql); 
+        $stmt->execute(['gebruikersnaam'=>$gebruikersnaam]); 
 
-                    $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+        $result = $stmt->fetch(PDO::FETCH_ASSOC); 
 
-                    if($result){
-                        echo 'account gevonden';
-                        if ($wachtwoord == $result["wachtwoord"]) {
-                            echo 'ww komt overeen';
-                            // Start the session
-                            SESSION_START();
-                            
-                            $_SESSION['gebruikersnaam'] = $result;
+        if($result){
+            echo 'account gevonden';
+            if ($wachtwoord == $result["wachtwoord"]) {
+                echo 'ww komt overeen';
+                // Start the session
+                SESSION_START();
+                
+                $_SESSION['gebruikersnaam'] = $result;
 
-                            header("location: overzichten.php");
-                        } else {
-                            echo "Invalid Password!";
-                        }
-                    } else {
-                        echo "Invalid Login";
-                    }
+                header("location: overzichten.php");
+            } else {
+                echo "Invalid Password!";
+            }
+        } else {
+            echo "Invalid Login";
+        }
 
-                }
+    }
 
                 //Het reserveringsoverzicht op de website krijgen
                 public function showReservering(){
@@ -79,7 +79,7 @@ class DB{
                 public function showKlant(){
                     try {
 
-                        $query = "SELECT * FROM klanten";
+                        $query = "SELECT * FROM reserveringen JOIN klanten ON reserveringen.klantenID_ph = klanten.klantenID";
 
                         $prep = $this->pdo->prepare($query);
 
@@ -130,6 +130,23 @@ class DB{
                         exit;
                     } catch (\Throwable $th) {
                         throw $th;
+                    }
+                }
+
+                public function deleteKlant($deleteklant){
+                    try {
+                        $query = $this->pdo->prepare(
+                            "DELETE FROM klanten
+                            WHERE klantenID = :klantenID;"
+                        );
+            
+                        $query->execute([
+                            'klantenID' => $deleteklant
+                        ]);
+            
+                        header("Location: klant.php");
+                    } catch (\PDOException $e) {
+                        throw $e;
                     }
                 }
 
@@ -192,6 +209,47 @@ class DB{
                         throw $th;
                     }
                 }
+    
+                public function showBar(){
+                    $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'bar';";
+        
+                    $prep = $this->pdo->prepare($query);
+                        
+                    $prep->execute();
+                            
+                    $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                                     
+                    return $rows;
+        
+                }
+
+                public function showKok(){
+                    $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'kok';";
+        
+                    $prep = $this->pdo->prepare($query);
+                        
+                    $prep->execute();
+                            
+                    $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                                     
+                    return $rows;
+        
+                }
+
+        
+                public function showBestelling(){
+                    $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID;";
+        
+                    $prep = $this->pdo->prepare($query);
+                        
+                    $prep->execute();
+                            
+                    $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                                     
+                    return $rows;
+        
+                }
+
 
 
                 public function createReservering($naam, $telefoon, $email, $datum, $tijd, $aantal, $tafel, $allergieen, $opmerkingen){
@@ -232,6 +290,20 @@ class DB{
         
                 }
 
+                public function showOber(){
+                    $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID; 
+                     SELECT bestellingen.reserveringenID_ph FROM bestellingen INNER JOIN reserveringen ON bestellingen.reserveringenID_ph = reserveringen.reserveringenID;";
+        
+                    $prep = $this->pdo->prepare($query);
+                        
+                    $prep->execute();
+                            
+                    $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
+                                     
+                    return $rows;
+        
+                }
+
                 public function showDrank(){
                     try {
 
@@ -266,7 +338,6 @@ class DB{
                      }
                 }
 
-                
                 public function showHoofd(){
                     try {
 
@@ -287,7 +358,7 @@ class DB{
                 public function showSub(){
                     try {
 
-                    $query = "SELECT * FROM gerechtscategorien WHERE NOT gerechtscategorieID = 1";
+                    $query = "SELECT * FROM gerechtsoorten";
                                         
                     $prep = $this->pdo->prepare($query);
                 
@@ -301,96 +372,46 @@ class DB{
                      }
                 }
 
+                public function deleteReservering($reserveringsID){
 
-        function deleteReservering($reserveringsID){
-
-            $query = "DELETE reserveringen, klanten FROM reserveringen JOIN klanten on reserveringen.klantenID_ph = klanten.klantenID
-                WHERE reserveringenID = :reserveringenID;";
-
-   
-            $statement = $this->pdo->prepare($query);
-
-            $statement->execute([
-                'reserveringenID' => $reserveringsID
-            ]);
-
-            header("Location: reserveren.php");
-
-        }
-
-        public function deleteKlant($klantenID){
-
-            $query = "DELETE reserveringen, klanten FROM reserveringen JOIN klanten on reserveringen.klantenID_ph = klanten.klantenID
-                WHERE reserveringenID = :reserveringenID; AND klanten.klant_ID = reserveringen.klant_ID";
-
-            $statement = $this->pdo->prepare($query);
-
-
-            $statement->execute([
-                'reserveringenID' => $klantenID
-            ]);
-
-
-            header("Location: klant.php");
-
-        }
-
-        public function createBestelling($geserveerd, $reserveringenID_ph, $menuitemsID, $aantal) {
-            $sql = "INSERT INTO bestellingen (bestellingenID, geserveerd, aantal, reserveringenID_ph, menuitemsID_ph)
-                    VALUES (NULL, :geserveerd, :aantal, :reserveringenID_ph, :menuitemsID_ph)";
-    
-            $stmt = $this->pdo->prepare($sql);
-    
-            $stmt->execute([
-                ':geserveerd' => $geserveerd,
-                ':aantal' => $aantal,
-                ':reserveringenID_ph' => $reserveringenID_ph,
-                ':menuitemsID_ph' => $menuitemsID
-            ]);
-    
-            header("Location: index.php");
-        }
-
-        public function showBestelling(){
-            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID;";
-
-            $prep = $this->pdo->prepare($query);
-                
-            $prep->execute();
-                    
-            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
-                             
-            return $rows;
-
-        }
-
+                    $query = "DELETE reserveringen, klanten FROM reserveringen JOIN klanten on reserveringen.klantenID_ph = klanten.klantenID
+                        WHERE reserveringenID = :reserveringenID;";
         
-        public function showKok(){
-            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'kok';";
-
-            $prep = $this->pdo->prepare($query);
-                
-            $prep->execute();
-                    
-            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
-                             
-            return $rows;
-
-        }
-
+           
+                    $statement = $this->pdo->prepare($query);
         
-        public function showBar(){
-            $query = "SELECT bestellingen.menuitemsID_ph, menuitems.naam, menuitems.prijs, bestellingen.bestellingenID, bestellingen.aantal FROM bestellingen INNER JOIN menuitems ON bestellingen.menuitemsID_ph = menuitems.menuitemsID WHERE code = 'bar';";
+                    $statement->execute([
+                        'reserveringenID' => $reserveringsID
+                    ]);
+        
+                    header("Location: reserveren.php");
+        
+                }
 
-            $prep = $this->pdo->prepare($query);
+                public function createBestelling($menuitemsID_ph, $aantal, $geserveerd, $reserveringenID_ph){ 
+                    try {
+                    $query = "INSERT INTO bestellingen(menuitemsID_ph, aantal, geserveerd, reserveringenID_ph) 
+                                VALUES (:menuitemsID_ph, :aantal, :geserveerd, :reserveringenID_ph)";
+
+            
+                    $prep = $this->pdo->prepare($query);
+            
+                    $prep->execute([
+                        
+                        'menuitemsID_ph' => $menuitemsID_ph,
+                        'aantal' => $aantal,
+                        'geserveerd' => $geserveerd,
+                        'reserveringenID_ph' => $reserveringenID_ph
+                        
+                    ]); 
+            
+                    header("Location: bestellen.php");
+                    } catch (\PDOException $e) {
+                        throw $e;
+                    }
+                }
                 
-            $prep->execute();
-                    
-            $rows = $prep->fetchAll(PDO::FETCH_ASSOC);
-                             
-            return $rows;
 
-        }
-
-    
-}
+            
+                
+            }

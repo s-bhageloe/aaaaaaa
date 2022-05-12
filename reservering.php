@@ -39,7 +39,7 @@ if(isset($_POST["submit"])){
       <a class="nav-link" href="reservering.php">Reserveren</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="bestelling.php">Bestellen</a>
+      <a class="nav-link" href="bestellen.php">Bestellen</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="login.php">Inloggen naar overzichten</a>
@@ -118,3 +118,4 @@ if(isset($_POST["submit"])){
 <button type="submit" name="submit" class="btn btn-primary">Reserveren</button>
 </form>
 </body>
+</html>

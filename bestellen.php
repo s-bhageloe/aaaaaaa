@@ -5,10 +5,8 @@ include_once 'database.php';
 $db = new DB('localhost', 'root', '', 'restaurant', 'utf8mb4'); //hier zet je de waardes($..) constructor
 
 if(isset($_POST["submit"])){
-    print_r($_POST);
-    {
-        $db->createBestelling($_POST['geserveerd'], $_POST['reservering'], $_POST['menuitem'], $_POST['aantal']);
-    }
+  $db->createBestelling($_POST['menuitemsID_ph'], $_POST['aantal'], $_POST['geserveerd'], $_POST['reserveringenID_ph']);
+
 }
 ?>
 
@@ -39,7 +37,7 @@ if(isset($_POST["submit"])){
       <a class="nav-link" href="reservering.php">Reserveren</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="bestelling.php">Bestellen</a>
+      <a class="nav-link" href="bestellen.php">Bestellen</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="login.php">Inloggen naar overzichten</a>
@@ -55,28 +53,18 @@ if(isset($_POST["submit"])){
     <h2>Maak hier een bestelling aan</h2>
   </div>
     <br>
-            <form method="POST">
-            <h4>Aantal</h4>
-            <div class="mb-3" style="width: 15%;">
-                <input type="text" name="aantal" class="form-control-sm" placeholder="Aantal" required>
-            </div>
-
-            <h4>Geserveerd</h4>
-            <div class="mb-3" style="width: 15%;">
-                <input type="text" name="geserveerd" class="form-control-sm" placeholder="Geserveerd" required>
-            </div>
-
-            <h4>Tafel</h4>
-            <div class="mb-3" style="width: 15%;">
-                <input type="text" name="reservering" class="form-control-sm" placeholder="Tafel" required>
-            </div>
-
-            <h4>Menuitem</h4>
-            <div class="mb-3" style="width: 15%;">
-                <input type="text" name="menuitem" class="form-control-sm" placeholder="Menuitem" required>
-            </div>
+    <form method="POST">
+    <form class="bestelling" action="" method="post">
+        <td> <input type="text" placeholder="menuitemsID" name="menuitemsID_ph"> </td>
+        <br>
+        <td> <input type="text" placeholder="aantal" name="aantal"> </td> 
+        <br>
+        <td> <input type="text" placeholder="geserveerd" name="geserveerd"> </td>
+        <br>
+        <td> <input type="text" placeholder="reseveringenID" name="reserveringenID_ph"> </td>
+        <br><br>
+          <button type="submit" class="btn btn-primary" name="submit">Bestellen</button>
+    </form>
 
 
-<button type="submit" name="submit" class="btn btn-primary">Bestellen</button>
-</form>
 </body>

@@ -28,6 +28,7 @@ $reserveringen = $db->showReservering();
 
       <li class="active"><a href="overzichten.php">Overzichten</a></li>
       <li><a href="reserveren.php">Reserveringen</a></li>
+      <li><a href="bestellingoverzicht.php">Bestelling Overzicht</a></li> 
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Serveren <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="kok.php">Voor kok</a></li>
@@ -73,7 +74,7 @@ $reserveringen = $db->showReservering();
                         <td><?php echo $reservering["telefoon"];?></td>
                         <td><?php echo $reservering["aantal"];?></td>
                         <td class="noExl">
-                            <a class="btn btn-primary mr-2 btn-sm" href="editreservering.php?reserveringenID=<?php echo $reservering["reserveringenID"]; ?>">Edit</a>
+                            <a class="btn btn-primary mr-2 btn-sm" href="editreservering.php?id=<?php echo $reservering["reserveringenID"]; ?>">Edit</a>
                         </td>      
                         <td class="noExl">
                             <a class="btn btn-danger mr-2 btn-sm" href="deletereservering.php?id=<?php echo $reservering["reserveringenID"]; ?>">Delete</a>

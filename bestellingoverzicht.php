@@ -27,6 +27,7 @@ $bestelling = $db->showBestelling();
 
       <li class="active"><a href="overzichten.php">Overzichten</a></li>
       <li><a href="reserveren.php">Reserveringen</a></li>
+      <li><a href="bestellingoverzicht.php">Bestelling Overzicht</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Serveren <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="kok.php">Voor kok</a></li>
@@ -63,19 +64,29 @@ $bestelling = $db->showBestelling();
                 <!-- klanten are rows and klant is a single row  -->
                 <?php foreach ($bestelling as $bestel): ?>
                     <tr>
-                        <td><?php echo $bestel["naam"]; ?></td>
+                        <td><?php echo $bestel["naam"];?></td>
                         <td><?php echo $bestel["prijs"];?></td>
                         <td><?php echo $bestel["aantal"];?></td>
-                        <td class="noExl">
-                            <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
-                        </td>      
-                        <td class="noExl">
-                            <a class="btn btn-danger mr-2 btn-sm" href="deleteklant.php?id=<?php echo $klant["klantenID"]; ?>">Delete</a>
-                        </td> 
+
                     </tr>
                 <?php endforeach; ?>     
             </tbody>
         </table>
     </main>
+    
+   
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $('#overzicht').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'print'
+        ]
+    } );
+    </script>
 </body>
 </html>

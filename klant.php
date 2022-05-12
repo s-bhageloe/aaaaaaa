@@ -27,6 +27,7 @@ $klanten = $db->showKlant();
 
       <li class="active"><a href="overzichten.php">Overzichten</a></li>
       <li><a href="reserveren.php">Reserveringen</a></li>
+      <li><a href="bestellingoverzicht.php">Bestelling Overzicht</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Serveren <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="kok.php">Voor kok</a></li>
@@ -56,6 +57,8 @@ $klanten = $db->showKlant();
                     <th scope="col">Naam</th>
                     <th scope="col">Telefoon</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Allergien</th>
+                    <th scope="col">Opmerkingen</th>
 
                 </tr>
             </thead>
@@ -66,6 +69,8 @@ $klanten = $db->showKlant();
                         <td><?php echo $klant["naam"]; ?></td>
                         <td><?php echo $klant["telefoon"];?></td>
                         <td><?php echo $klant["email"];?></td>
+                        <td><?php echo $klant["allergieen"];?></td>
+                        <td><?php echo $klant["opmerkingen"];?></td>
                         <td class="noExl">
                             <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
                         </td>      

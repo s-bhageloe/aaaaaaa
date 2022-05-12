@@ -27,6 +27,7 @@ $eten = $db->showEten();
 
       <li class="active"><a href="overzichten.php">Overzichten</a></li>
       <li><a href="reserveren.php">Reserveringen</a></li>
+      <li><a href="bestellingoverzicht.php">Bestelling Overzicht</a></li>
       <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Serveren <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="kok.php">Voor kok</a></li>
@@ -68,12 +69,6 @@ $eten = $db->showEten();
                         <td><?php echo $yum["naam"];?></td>
                         <td><?php echo $yum["prijs"];?></td>
                         <td><?php echo $yum["gerechtscategorienID_ph"];?></td>
-                        <td class="noExl">
-                            <a class="btn btn-primary mr-2 btn-sm" href="editklant.php?id=<?php echo $klant["klantenID"]; ?>">Edit</a>
-                        </td>      
-                        <td class="noExl">
-                            <a class="btn btn-danger mr-2 btn-sm" href="deleteklant.php?id=<?php echo $klant["klantenID"]; ?>">Delete</a>
-                        </td> 
                     </tr>
                 <?php endforeach; ?>     
             </tbody>
